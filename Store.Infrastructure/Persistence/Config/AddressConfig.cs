@@ -63,7 +63,7 @@ namespace Store.Infrastructure.Persistence.Config
             builder.HasOne<Location>()
                 .WithMany()
                 .HasForeignKey(a => a.LocationId)
-                .OnDelete(DeleteBehavior.Restrict)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }
