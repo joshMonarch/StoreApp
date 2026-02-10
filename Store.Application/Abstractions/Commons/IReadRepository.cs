@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Store.Application.Abstractions.Commons
+﻿namespace Store.Application.Abstractions.Commons
 {
-    internal interface IReadRepository
+    public interface IReadRepository<T>
     {
+        Task<T> GetAllAsync(CancellationToken ct);
+        Task<T> GetByIdAsync(int id, CancellationToken ct);
     }
 }
