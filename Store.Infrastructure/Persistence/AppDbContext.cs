@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Store.Domain.Entities;
+using Store.Infrastructure.Persistence.Config;
 
 namespace Store.Infrastructure.Persistence
 {
@@ -17,7 +18,11 @@ namespace Store.Infrastructure.Persistence
         {
             base.OnModelCreating(modelBuilder);
 
-            
+            modelBuilder.ApplyConfiguration(new UserConfig());
+            modelBuilder.ApplyConfiguration(new ProductConfig());
+            modelBuilder.ApplyConfiguration(new AddressConfig());
+            modelBuilder.ApplyConfiguration(new LocationConfig());
+            modelBuilder.ApplyConfiguration(new CategoryConfig());
         }
     }
 }
