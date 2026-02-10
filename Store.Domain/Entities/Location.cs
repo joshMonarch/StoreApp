@@ -1,11 +1,11 @@
 ﻿namespace Store.Domain.Entities
 {
-    public class Category
+    public class Location
     {
         public int Id { get; set; }
-        public string? CategoryName { get; set; }
+        public string? LocationType { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
-        public List<Product> Products { get; set; } = new List<Product> { };
+        public List<Address> Addresses { get; set; } = new List<Address> { };
     }
 }

@@ -9,6 +9,7 @@
         public DateOnly BirthDate { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
-        public List<Address> Addresses { get; set; } = new List<Address>();
+        public List<Address> Addresses { get; set; } = new List<Address> { };
+        public List<Product> Products { get; set; } = new List<Product> { };
     }
 }
