@@ -1,7 +1,9 @@
-﻿namespace Store.Application.Abstractions.Commons
+﻿using Store.Domain.Commons;
+
+namespace Store.Application.Abstractions.Commons
 {
     public interface IDeleteRepository<T>
     {
-        Task<int> DeleteAsync(T entity, CancellationToken ct);
+        Task<Result<int>> DeleteAsync(T entity, CancellationToken ct);
     }
 }
