@@ -4,6 +4,6 @@ namespace Store.Application.Abstractions.Commons
 {
     public interface IUpdateRepository<T>
     {
-        Task<Result<int>> UpdateAsync(T entity, CancellationToken ct);
+        Task<int> UpdateAsync(T entity, CancellationToken ct);
     }
 }

@@ -4,6 +4,6 @@ namespace Store.Application.Abstractions.Commons
 {
     public interface ICreateRepository<T>
     {
-        Task<Result<int>> CreateAsync(T entity, CancellationToken ct);
+        Task<int> CreateAsync(T entity, CancellationToken ct);
     }
 }
