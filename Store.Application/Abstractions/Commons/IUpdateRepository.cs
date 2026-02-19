@@ -1,6 +1,4 @@
-﻿using Store.Domain.Commons;
-
-namespace Store.Application.Abstractions.Commons
+﻿namespace Store.Application.Abstractions.Commons
 {
     public interface IUpdateRepository<T>
     {
