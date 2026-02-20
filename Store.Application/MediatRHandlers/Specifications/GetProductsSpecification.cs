@@ -1,7 +1,7 @@
 ﻿using Store.Application.Commons.Specifications;
 using Store.Domain.Entities;
 
-namespace Store.Application.Queries.GetProduct
+namespace Store.Application.MediatRHandlers.Requests.GetProduct
 {
     public class GetProductsSpecification: BaseSpecification<Product>
     {

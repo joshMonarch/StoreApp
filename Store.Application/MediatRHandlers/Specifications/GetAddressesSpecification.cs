@@ -1,7 +1,7 @@
 ﻿using Store.Application.Commons.Specifications;
 using Store.Domain.Entities;
 
-namespace Store.Application.Queries.GetAddress
+namespace Store.Application.MediatRHandlers.Requests.GetAddress
 {
     public class GetAddressesSpecification: BaseSpecification<Address>
     {

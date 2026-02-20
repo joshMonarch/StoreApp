@@ -1,17 +1,18 @@
-﻿using Store.Application.Abstractions.CQRS;
+﻿using MediatR;
 using Store.Application.DTOs;
+using Store.Domain.Commons;
 using System.Collections.ObjectModel;
 
-namespace Store.Application.Queries.GetUser
+namespace Store.Application.MediatRHandlers.Requests
 {
-    public class GetUsersQuery: IQuery<ReadOnlyCollection<ResponseUserDto>>
+    public class GetUsersRequest: IRequest<Result<ReadOnlyCollection<ResponseUserDto>>>
     {
         public DateOnly? FromBirthDate { get; }
         public DateOnly? ToBirthDate { get; }
         public DateOnly? FromDate { get; }
         public DateOnly? ToDate { get; }
 
-        public GetUsersQuery(DateOnly? fromDate, DateOnly? toDate, DateOnly? fromBirthDate, DateOnly? toBirthDate)
+        public GetUsersRequest(DateOnly? fromDate, DateOnly? toDate, DateOnly? fromBirthDate, DateOnly? toBirthDate)
         {
             FromDate = fromDate;
             ToDate = toDate;

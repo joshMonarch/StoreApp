@@ -1,10 +1,11 @@
-﻿using Store.Application.Abstractions.CQRS;
+﻿using MediatR;
 using Store.Application.DTOs;
+using Store.Domain.Commons;
 using System.Collections.ObjectModel;
 
-namespace Store.Application.Queries.GetAddress
+namespace Store.Application.MediatRHandlers.Requests
 {
-    public class GetAddressesQuery : IQuery<ReadOnlyCollection<ResponseAddressDto>>
+    public class GetAddressesRequest : IRequest<Result<ReadOnlyCollection<ResponseAddressDto>>>
     {
         public int? UserId { get; }
         public string? Country { get; }
@@ -13,7 +14,7 @@ namespace Store.Application.Queries.GetAddress
         public DateOnly? FromDate { get; }
         public DateOnly? ToDate { get; }
 
-        public GetAddressesQuery(int? userId, string? country, string? region, string? city, DateOnly? fromDate, DateOnly? toDate)
+        public GetAddressesRequest(int? userId, string? country, string? region, string? city, DateOnly? fromDate, DateOnly? toDate)
         {
             UserId = userId;
             Country = country;

@@ -1,17 +1,18 @@
-﻿using Store.Application.Abstractions.CQRS;
+﻿using MediatR;
 using Store.Application.DTOs;
+using Store.Domain.Commons;
 using System.Collections.ObjectModel;
 
-namespace Store.Application.Queries.GetProduct
+namespace Store.Application.MediatRHandlers.Requests
 {
-    public class GetProductsQuery: IQuery<ReadOnlyCollection<ResponseProductDto>>
+    public class GetProductsRequest: IRequest<Result<ReadOnlyCollection<ResponseProductDto>>>
     {
         public int? UserId { get; }
         public int? CategoryId { get; }
         public DateTime? FromDate { get; }
         public DateTime? ToDate { get; }
 
-        public GetProductsQuery(int? userId, int? categoryId, DateTime? fromDate, DateTime? toDate)
+        public GetProductsRequest(int? userId, int? categoryId, DateTime? fromDate, DateTime? toDate)
         {
             UserId = userId;
             CategoryId = categoryId;
