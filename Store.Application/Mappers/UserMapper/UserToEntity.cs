@@ -1,16 +1,18 @@
-﻿using Store.Domain.Entities;
+﻿using Store.Application.MediatRHandlers.Requests.UserRequests;
+using Store.Domain.Commons;
+using Store.Domain.Entities;
 
 namespace Store.Application.Mappers.UserMapper
 {
     public class UserToEntity
     {
-        public static User ToEntity(CreateUserCommand command)
+        public static Result<User> ToEntity(CreateUserRequest request)
         {
             return User.Create(
-                    command.username,
-                    command.password,
-                    command.email,
-                    command.birthDate
+                    request.Username,
+                    request.Password,
+                    request.Email,
+                    request.BirthDate
                 );
         }
     }
