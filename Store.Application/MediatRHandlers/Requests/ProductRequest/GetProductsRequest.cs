@@ -3,7 +3,7 @@ using Store.Application.DTOs;
 using Store.Domain.Commons;
 using System.Collections.ObjectModel;
 
-namespace Store.Application.MediatRHandlers.Requests
+namespace Store.Application.MediatRHandlers.Requests.ProductRequest
 {
     public class GetProductsRequest: IRequest<Result<ReadOnlyCollection<ResponseProductDto>>>
     {
