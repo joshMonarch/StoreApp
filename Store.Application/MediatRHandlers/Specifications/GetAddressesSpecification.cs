@@ -13,9 +13,9 @@ namespace Store.Application.MediatRHandlers.Requests.GetAddress
             (string.IsNullOrWhiteSpace(region) || a.Region == region) && 
             (string.IsNullOrWhiteSpace(city) || a.City == city) &&
             (fromDate.HasValue && 
-                a.CreatedAt > fromDate.Value.ToDateTime(TimeOnly.MinValue)) &&
+                a.CreatedAt >= fromDate.Value.ToDateTime(TimeOnly.MinValue)) &&
             (toDate.HasValue && 
-                a.CreatedAt < toDate.Value.ToDateTime(TimeOnly.MinValue));
+                a.CreatedAt <= toDate.Value.ToDateTime(TimeOnly.MinValue));
         }
     }
 }
