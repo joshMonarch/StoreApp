@@ -1,6 +1,9 @@
-﻿using Store.Application.Abstractions;
+﻿using Microsoft.EntityFrameworkCore;
+using Store.Application.Abstractions;
+using Store.Application.Commons.Specifications;
 using Store.Domain.Entities;
 using Store.Infrastructure.Persistence;
+using System.Collections.ObjectModel;
 
 namespace Store.Infrastructure.Repositories
 {
@@ -21,7 +24,7 @@ namespace Store.Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<Address> GetAllAsync(CancellationToken ct)
+        public Task<ReadOnlyCollection<Address>> GetAllAsync(CancellationToken ct)
         {
             throw new NotImplementedException();
         }
@@ -29,6 +32,16 @@ namespace Store.Infrastructure.Repositories
         public Task<Address> GetByIdAsync(int id, CancellationToken ct)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<ReadOnlyCollection<Address>> GetFilteredAsync(ISpecification<Address> spec, CancellationToken ct)
+        {
+            IQueryable<Address> query = _dbContext.Addresses
+                .Where(spec.Condition);
+
+            var list = await query.ToListAsync(ct);
+
+            return list.AsReadOnly();
         }
 
         public Task<int> UpdateAsync(Address entity, CancellationToken ct)

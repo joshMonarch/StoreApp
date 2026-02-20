@@ -1,6 +1,8 @@
 ﻿using Store.Application.Abstractions;
+using Store.Application.Commons.Specifications;
 using Store.Domain.Entities;
 using Store.Infrastructure.Persistence;
+using System.Collections.ObjectModel;
 
 namespace Store.Infrastructure.Repositories
 {
@@ -11,6 +13,7 @@ namespace Store.Infrastructure.Repositories
         {
             _dbContext = dbContext;
         }
+
         public Task<int> CreateAsync(Location entity, CancellationToken ct)
         {
             throw new NotImplementedException();
@@ -21,12 +24,17 @@ namespace Store.Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<Location> GetAllAsync(CancellationToken ct)
+        public Task<ReadOnlyCollection<Location>> GetAllAsync(CancellationToken ct)
         {
             throw new NotImplementedException();
         }
 
         public Task<Location> GetByIdAsync(int id, CancellationToken ct)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ReadOnlyCollection<Location>> GetFilteredAsync(ISpecification<Location> spec, CancellationToken ct)
         {
             throw new NotImplementedException();
         }
