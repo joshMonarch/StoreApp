@@ -2,13 +2,13 @@
 using Store.Application.Abstractions;
 using Store.Application.DTOs;
 using Store.Application.Mappers.ProductMapper;
-using Store.Application.MediatRHandlers.Requests;
-using Store.Application.MediatRHandlers.Specifications;
+using Store.Application.MediatRHandlers.Requests.GetProduct;
+using Store.Application.MediatRHandlers.Requests.ProductRequest;
 using Store.Domain.Commons;
 using Store.Domain.Entities;
 using System.Collections.ObjectModel;
 
-namespace Store.Application.MediatRHandlers.RequestHandlers
+namespace Store.Application.MediatRHandlers.RequestHandlers.ProductHandlers
 {
     public class GetProductsHandler : IRequestHandler<GetProductsRequest, Result<ReadOnlyCollection<ResponseProductDto>>>
     {

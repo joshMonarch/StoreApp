@@ -1,14 +1,14 @@
 ﻿using Store.Application.Abstractions;
 using Store.Application.DTOs;
 using Store.Application.Mappers.AddressMapper;
-using Store.Application.MediatRHandlers.Requests;
 using Store.Domain.Commons;
 using Store.Domain.Entities;
 using System.Collections.ObjectModel;
 using MediatR;
-using Store.Application.MediatRHandlers.Specifications;
+using Store.Application.MediatRHandlers.Requests.AddressRequests;
+using Store.Application.MediatRHandlers.Requests.GetAddress;
 
-namespace Store.Application.MediatRHandlers.RequestHandlers
+namespace Store.Application.MediatRHandlers.RequestHandlers.AddressHandlers
 {
     public class GetAddressesHandler : IRequestHandler<GetAddressesRequest, Result<ReadOnlyCollection<ResponseAddressDto>>>
     {

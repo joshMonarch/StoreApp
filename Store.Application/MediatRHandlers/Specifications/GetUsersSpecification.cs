@@ -13,9 +13,9 @@ namespace Store.Application.MediatRHandlers.Specifications
             (toBirthDate.HasValue &&
             u.BirthDate < toBirthDate) &&
             (fromDate.HasValue &&
-            u.CreatedAt > fromDate.Value.ToDateTime(TimeOnly.MinValue)) &&
+            u.CreatedAt >= fromDate.Value.ToDateTime(TimeOnly.MinValue)) &&
             (toDate.HasValue &&
-            u.CreatedAt < toDate.Value.ToDateTime(TimeOnly.MinValue));
+            u.CreatedAt <= toDate.Value.ToDateTime(TimeOnly.MinValue));
         }
     }
 }
