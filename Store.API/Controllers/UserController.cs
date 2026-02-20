@@ -1,12 +1,12 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Store.Application.MediatRHandlers.Requests;
+using Store.Application.MediatRHandlers.Requests.UserRequests;
 
 namespace Store.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class UserController: ControllerBase
+    public class UserController : ControllerBase
     {
         private readonly IMediator _mediator;
         public UserController(IMediator mediator)
@@ -28,6 +28,15 @@ namespace Store.API.Controllers
             if (!result.IsSuccess)
                 return BadRequest(result);
 
+            return Ok(result);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] CreateUserRequest request, CancellationToken ct)
+        {
+            var result = await _mediator.Send(request, ct);
+            if (!result.IsSuccess)
+                return BadRequest(result);
             return Ok(result);
         }
     }

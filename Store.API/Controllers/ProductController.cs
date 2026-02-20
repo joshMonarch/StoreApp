@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Store.Application.MediatRHandlers.Requests;
+using Store.Application.MediatRHandlers.Requests.ProductRequest;
 
 namespace Store.API.Controllers
 {
@@ -29,6 +29,15 @@ namespace Store.API.Controllers
             if (!result.IsSuccess)
                 return BadRequest(result);
 
+            return Ok(result);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] CreateProductRequest request, CancellationToken ct)
+        {
+            var result = await _mediator.Send(request, ct);
+            if (!result.IsSuccess)
+                return BadRequest(result);
             return Ok(result);
         }
     }

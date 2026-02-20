@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Store.Application.MediatRHandlers.Requests;
+using Store.Application.MediatRHandlers.Requests.AddressRequests;
 
 namespace Store.API.Controllers
 {
@@ -16,12 +16,12 @@ namespace Store.API.Controllers
 
         [HttpGet]
         public async Task<IActionResult> GetFiltered(
-            [FromQuery] int? userId, 
-            [FromQuery] string? country, 
-            [FromQuery] string? region, 
-            [FromQuery] string? city, 
-            [FromQuery] DateOnly? fromDate, 
-            [FromQuery] DateOnly? toDate, 
+            [FromQuery] int? userId,
+            [FromQuery] string? country,
+            [FromQuery] string? region,
+            [FromQuery] string? city,
+            [FromQuery] DateOnly? fromDate,
+            [FromQuery] DateOnly? toDate,
             CancellationToken ct)
         {
             var request = new GetAddressesRequest(userId, country, region, city, fromDate, toDate);
@@ -30,6 +30,15 @@ namespace Store.API.Controllers
             if (!result.IsSuccess)
                 return BadRequest(result);
 
+            return Ok(result);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] CreateAddressRequest request, CancellationToken ct)
+        {
+            var result = await _mediator.Send(request, ct);
+            if (!result.IsSuccess)
+                return BadRequest(result);
             return Ok(result);
         }
     }
