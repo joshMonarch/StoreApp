@@ -2,13 +2,13 @@
 using Store.Application.Abstractions;
 using Store.Application.DTOs;
 using Store.Application.Mappers.UserMapper;
-using Store.Application.MediatRHandlers.Requests;
+using Store.Application.MediatRHandlers.Requests.UserRequests;
 using Store.Application.MediatRHandlers.Specifications;
 using Store.Domain.Commons;
 using Store.Domain.Entities;
 using System.Collections.ObjectModel;
 
-namespace Store.Application.MediatRHandlers.RequestHandlers
+namespace Store.Application.MediatRHandlers.RequestHandlers.UserHandlers
 {
     public class GetUsersHandler : IRequestHandler<GetUsersRequest, Result<ReadOnlyCollection<ResponseUserDto>>>
     {
