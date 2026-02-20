@@ -1,7 +1,7 @@
 ﻿using Store.Application.Commons.Specifications;
 using Store.Domain.Entities;
 
-namespace Store.Application.Queries.GetUser
+namespace Store.Application.MediatRHandlers.Specifications
 {
     public class GetUsersSpecification: BaseSpecification<User>
     {
