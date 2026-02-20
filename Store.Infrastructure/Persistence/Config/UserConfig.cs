@@ -32,10 +32,12 @@ namespace Store.Infrastructure.Persistence.Config
 
             builder.Property(u => u.CreatedAt)
                 .IsRequired()
+                .HasDefaultValueSql("GETUTCDATE()")
                 .ValueGeneratedOnAdd();
 
-            builder.Property(U => U.UpdatedAt)
+            builder.Property(u => u.UpdatedAt)
                 .IsRequired()
+                .HasDefaultValueSql("GETUTCDATE()")
                 .ValueGeneratedOnAddOrUpdate();
 
             builder.HasMany(u => u.Addresses)
