@@ -5,19 +5,19 @@ namespace Store.Domain.Entities
     public class Address
     {
         public int Id { get; private set; }
-        public int UserId { get; private set; }
-        public int LocationId { get; private set; }
+        public int? UserId { get; private set; }
+        public int? LocationId { get; private set; }
         public string? Country { get; private set; }
         public string? Region { get; private set; }
         public string? City { get; private set; }
         public string? Name { get; private set; }
-        public int Number { get; private set; }
+        public int? Number { get; private set; }
         public int? Floor { get; private set; }
         public string? Door { get; private set; }
         public DateTime CreatedAt { get; private set; }
         public DateTime UpdatedAt { get; private set; }
         private Address() { }
-        public Address(int userId, int locationId, string? country, string? region, string? city, string? name, int number, int? floor, string? door)
+        public Address(int? userId, int? locationId, string? country, string? region, string? city, string? name, int? number, int? floor, string? door)
         {
             UserId = userId;
             LocationId = locationId;
@@ -30,7 +30,7 @@ namespace Store.Domain.Entities
             Door = door;
         }
 
-        public static Result<Address> Create(int userId, int locationId, string? country, string? region, string? city, string? name, int number, int? floor, string? door)
+        public static Result<Address> Create(int? userId, int? locationId, string? country, string? region, string? city, string? name, int? number, int? floor, string? door)
         {
             if (userId <= 0)
                 return Result<Address>.Fail("UserId must be higher than 0.");
