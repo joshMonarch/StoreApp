@@ -9,10 +9,10 @@ namespace Store.Application.MediatRHandlers.Requests
     {
         public int? UserId { get; }
         public int? CategoryId { get; }
-        public DateTime? FromDate { get; }
-        public DateTime? ToDate { get; }
+        public DateOnly? FromDate { get; }
+        public DateOnly? ToDate { get; }
 
-        public GetProductsRequest(int? userId, int? categoryId, DateTime? fromDate, DateTime? toDate)
+        public GetProductsRequest(int? userId, int? categoryId, DateOnly? fromDate, DateOnly? toDate)
         {
             UserId = userId;
             CategoryId = categoryId;
