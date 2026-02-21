@@ -13,6 +13,7 @@ namespace Store.Infrastructure.Persistence.Config
             builder.HasKey(u => u.Id);
 
             builder.Property(u => u.Id)
+                .IsRequired()
                 .ValueGeneratedOnAdd();
 
             builder.Property(u => u.Username)

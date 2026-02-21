@@ -13,7 +13,8 @@ namespace Store.Infrastructure.Persistence.Config
             builder.HasKey(c => c.Id);
 
             builder.Property(c => c.Id)
-                .IsRequired();
+                .IsRequired()
+                .ValueGeneratedOnAdd();
 
             builder.Property(c => c.CategoryName)
                 .IsRequired()

@@ -13,7 +13,8 @@ namespace Store.Infrastructure.Persistence.Config
             builder.HasIndex(l => l.Id);
 
             builder.Property(l => l.Id)
-                .IsRequired();
+                .IsRequired()
+                .ValueGeneratedOnAdd();
 
             builder.Property(l => l.LocationType)
                 .IsRequired()
