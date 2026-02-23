@@ -8,14 +8,10 @@ namespace Store.Application.MediatRHandlers.Specifications
         public GetUsersSpecification(DateOnly? fromBirthDate, DateOnly? toBirthDate, DateOnly? fromDate, DateOnly? toDate)
         {
             Condition = u =>
-            (fromBirthDate.HasValue && 
-            u.BirthDate > fromBirthDate) &&
-            (toBirthDate.HasValue &&
-            u.BirthDate < toBirthDate) &&
-            (fromDate.HasValue &&
-            u.CreatedAt >= fromDate.Value.ToDateTime(TimeOnly.MinValue)) &&
-            (toDate.HasValue &&
-            u.CreatedAt <= toDate.Value.ToDateTime(TimeOnly.MinValue));
+                (!fromBirthDate.HasValue || u.BirthDate > fromBirthDate.Value) &&
+                (!toBirthDate.HasValue || u.BirthDate < toBirthDate.Value) &&
+                (!fromDate.HasValue || u.CreatedAt >= fromDate.Value.ToDateTime(TimeOnly.MinValue)) &&
+                (!toDate.HasValue || u.CreatedAt <= toDate.Value.ToDateTime(TimeOnly.MaxValue));
         }
     }
 }
