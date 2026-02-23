@@ -1,8 +1,10 @@
-﻿using Store.Application.Abstractions;
+﻿using Microsoft.EntityFrameworkCore;
+using Store.Application.Abstractions;
 using Store.Application.Commons.Specifications;
 using Store.Domain.Entities;
 using Store.Infrastructure.Persistence;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace Store.Infrastructure.Repositories
 {
@@ -34,9 +36,14 @@ namespace Store.Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<ReadOnlyCollection<Location>> GetFilteredAsync(ISpecification<Location> spec, CancellationToken ct)
+        public async Task<ReadOnlyCollection<Location>> GetFilteredAsync(ISpecification<Location> spec, CancellationToken ct)
         {
-            throw new NotImplementedException();
+            IQueryable<Location> query = _dbContext.Locations
+                .Where(spec.Condition);
+
+            var list = await query.ToListAsync(ct);
+
+            return list.AsReadOnly();
         }
 
         public Task<int> UpdateAsync(Location entity, CancellationToken ct)

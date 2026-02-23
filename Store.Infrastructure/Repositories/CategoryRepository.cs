@@ -4,16 +4,23 @@ using Store.Application.Commons.Specifications;
 using Store.Domain.Entities;
 using Store.Infrastructure.Persistence;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace Store.Infrastructure.Repositories
 {
     public class CategoryRepository : ICategoryRepository
     {
         private readonly AppDbContext _dbContext;
-
-        public Task<int> CreateAsync(Category entity, CancellationToken ct)
+        public CategoryRepository(AppDbContext dbContext)
         {
-            throw new NotImplementedException();
+            _dbContext = dbContext;
+        }
+
+        public async Task<int> CreateAsync(Category entity, CancellationToken ct)
+        {
+            var result = _dbContext.Categories.Add(entity);
+            await _dbContext.SaveChangesAsync(ct);
+            return result.Entity.Id;
         }
 
         public Task<int> DeleteAsync(Category entity, CancellationToken ct)
@@ -36,9 +43,14 @@ namespace Store.Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<ReadOnlyCollection<Category>> GetFilteredAsync(ISpecification<Category> spec, CancellationToken ct)
+        public async Task<ReadOnlyCollection<Category>> GetFilteredAsync(ISpecification<Category> spec, CancellationToken ct)
         {
-            throw new NotImplementedException();
+            IQueryable<Category> query = _dbContext.Categories
+                .Where(spec.Condition);
+
+            var list = await query.ToListAsync(ct);
+
+            return list.AsReadOnly();
         }
 
         public Task<int> UpdateAsync(Category entity, CancellationToken ct)
