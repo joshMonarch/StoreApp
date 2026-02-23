@@ -6,10 +6,10 @@ namespace Store.Domain.Commons
     {
         public bool IsSuccess { get; }
 
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public string? Error { get; }
 
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public string? SuccessMessage { get; }
 
         protected Result(bool isSuccess, string? error, string? successMessage)
@@ -30,7 +30,7 @@ namespace Store.Domain.Commons
 
     public class Result<T> : Result
     {
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public T Data { get; }
 
         private Result(bool isSuccess, string? error, string? successMessage, T? value)

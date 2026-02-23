@@ -13,7 +13,8 @@ namespace Store.Infrastructure.Persistence.Config
             builder.HasKey(c => c.Id);
 
             builder.Property(c => c.Id)
-                .IsRequired();
+                .IsRequired()
+                .ValueGeneratedOnAdd();
 
             builder.Property(c => c.CategoryName)
                 .IsRequired()
@@ -24,10 +25,12 @@ namespace Store.Infrastructure.Persistence.Config
 
             builder.Property(c => c.CreatedAt)
                 .IsRequired()
+                .HasDefaultValueSql("GETUTCDATE()")
                 .ValueGeneratedOnAdd();
 
             builder.Property(c => c.UpdatedAt)
                 .IsRequired()
+                .HasDefaultValueSql("GETUTCDATE()")
                 .ValueGeneratedOnAddOrUpdate();
 
             builder.HasMany(c => c.Products)

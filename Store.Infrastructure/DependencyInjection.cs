@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Store.Application.Abstractions;
 using Store.Infrastructure.Persistence;
+using Store.Infrastructure.Repositories;
 
 namespace Store.Infrastructure;
 
@@ -15,19 +16,19 @@ public static class DependencyInjection
                 configuration.GetConnectionString("SqlServerConnection")));
 
         #region User
-        services.AddScoped<IUserRepository, IUserRepository>();
+        services.AddScoped<IUserRepository, UserRepository>();
         #endregion
         #region Address
-        services.AddScoped<IAddressRepository, IAddressRepository>();
+        services.AddScoped<IAddressRepository, AddressRepository>();
         #endregion
         #region Product
-        services.AddScoped<IProductRepository, IProductRepository>();
+        services.AddScoped<IProductRepository, ProductRepository>();
         #endregion
         #region Location
-        services.AddScoped<ILocationRepository, ILocationRepository>();
+        services.AddScoped<ILocationRepository, LocationRepository>();
         #endregion
         #region Category
-        services.AddScoped<ICategoryRepository, ICategoryRepository>();
+        services.AddScoped<ICategoryRepository, CategoryRepository>();
         #endregion
 
         return services;

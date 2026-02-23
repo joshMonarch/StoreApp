@@ -13,7 +13,8 @@ namespace Store.Infrastructure.Persistence.Config
             builder.HasIndex(l => l.Id);
 
             builder.Property(l => l.Id)
-                .IsRequired();
+                .IsRequired()
+                .ValueGeneratedOnAdd();
 
             builder.Property(l => l.LocationType)
                 .IsRequired()
@@ -24,10 +25,12 @@ namespace Store.Infrastructure.Persistence.Config
 
             builder.Property(l => l.CreatedAt)
                 .IsRequired()
+                .HasDefaultValueSql("GETUTCDATE()")
                 .ValueGeneratedOnAdd();
 
             builder.Property(l => l.UpdatedAt)
                 .IsRequired()
+                .HasDefaultValueSql("GETUTCDATE()")
                 .ValueGeneratedOnAddOrUpdate();
 
             builder.HasMany(l => l.Addresses)

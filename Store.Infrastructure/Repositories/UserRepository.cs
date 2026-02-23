@@ -14,10 +14,11 @@ namespace Store.Infrastructure.Repositories
         {
             _dbContext = dbContext;
         }
-        public Task<int> CreateAsync(User entity, CancellationToken ct)
+        public async Task<int> CreateAsync(User entity, CancellationToken ct)
         {
-            throw new NotImplementedException();
-
+            var result = _dbContext.Users.Add(entity);
+            await _dbContext.SaveChangesAsync(ct);
+            return result.Entity.Id;
         }
 
         public Task<int> DeleteAsync(User entity, CancellationToken ct)

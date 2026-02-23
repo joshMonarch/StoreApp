@@ -13,6 +13,7 @@ namespace Store.Infrastructure.Persistence.Config
             builder.HasKey(u => u.Id);
 
             builder.Property(u => u.Id)
+                .IsRequired()
                 .ValueGeneratedOnAdd();
 
             builder.Property(u => u.Username)
@@ -32,10 +33,12 @@ namespace Store.Infrastructure.Persistence.Config
 
             builder.Property(u => u.CreatedAt)
                 .IsRequired()
+                .HasDefaultValueSql("GETUTCDATE()")
                 .ValueGeneratedOnAdd();
 
-            builder.Property(U => U.UpdatedAt)
+            builder.Property(u => u.UpdatedAt)
                 .IsRequired()
+                .HasDefaultValueSql("GETUTCDATE()")
                 .ValueGeneratedOnAddOrUpdate();
 
             builder.HasMany(u => u.Addresses)
