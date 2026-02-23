@@ -8,7 +8,7 @@ namespace Store.Application.MediatRHandlers.Requests.GetProduct
         public GetProductsSpecification(int? userId, int? categoryId, DateOnly? fromDate, DateOnly? toDate)
         {
             Condition = p =>
-                (!userId.HasValue || p.UserId == userId) &&
+                (!userId.HasValue || p.UserId == userId.Value) &&
                 (!categoryId.HasValue || p.CategoryId == categoryId.Value) &&
                 (!fromDate.HasValue || p.CreatedAt >= fromDate.Value.ToDateTime(TimeOnly.MinValue)) &&
                 (!toDate.HasValue || p.CreatedAt <= toDate.Value.ToDateTime(TimeOnly.MaxValue));
