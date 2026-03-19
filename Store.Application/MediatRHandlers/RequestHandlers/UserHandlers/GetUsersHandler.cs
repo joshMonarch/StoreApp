@@ -1,11 +1,8 @@
 ﻿using MediatR;
 using Store.Application.Abstractions;
 using Store.Application.DTOs;
-using Store.Application.Mappers.UserMapper;
 using Store.Application.MediatRHandlers.Requests.UserRequests;
-using Store.Application.MediatRHandlers.Specifications;
 using Store.Domain.Commons;
-using Store.Domain.Entities;
 using System.Collections.ObjectModel;
 
 namespace Store.Application.MediatRHandlers.RequestHandlers.UserHandlers
@@ -19,11 +16,10 @@ namespace Store.Application.MediatRHandlers.RequestHandlers.UserHandlers
         }
         public async Task<Result<ReadOnlyCollection<ResponseUserDto>>> Handle(GetUsersRequest request, CancellationToken ct)
         {
-            var spec = new GetUsersSpecification(request.FromBirthDate, request.ToBirthDate, request.FromDate, request.ToDate);
 
-            ReadOnlyCollection<User> users = await _userRepository.GetFilteredAsync(spec, ct);
+            ReadOnlyCollection<ResponseUserDto> users = await _userRepository.GetFilteredAsync(request, ct);
 
-            return Result<ReadOnlyCollection<ResponseUserDto>>.Ok(UserToDto.ToDtoList(users));
+            return Result<ReadOnlyCollection<ResponseUserDto>>.Ok(users);
         }
     }
 }

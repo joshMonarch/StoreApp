@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Store.Domain.Entities;
 
-namespace Store.Infrastructure.Persistence.Config
+namespace Store.Infrastructure.Persistence.SQLServer.Config
 {
     public class AddressConfig : IEntityTypeConfiguration<Address>
     {
@@ -13,8 +13,7 @@ namespace Store.Infrastructure.Persistence.Config
             builder.HasKey(a => a.Id);
 
             builder.Property(a => a.Id)
-                .IsRequired()
-                .ValueGeneratedOnAdd();
+                .IsRequired();
             
             builder.Property(a => a.UserId)
                 .IsRequired();
@@ -49,14 +48,10 @@ namespace Store.Infrastructure.Persistence.Config
                 .HasMaxLength(10);
 
             builder.Property(a => a.CreatedAt)
-                .IsRequired()
-                .HasDefaultValueSql("GETUTCDATE()")
-                .ValueGeneratedOnAdd();
+                .IsRequired();
 
             builder.Property(a => a.UpdatedAt)
-                .IsRequired()
-                .HasDefaultValueSql("GETUTCDATE()")
-                .ValueGeneratedOnAddOrUpdate();
+                .IsRequired();
 
             builder.HasOne<User>()
                 .WithMany()

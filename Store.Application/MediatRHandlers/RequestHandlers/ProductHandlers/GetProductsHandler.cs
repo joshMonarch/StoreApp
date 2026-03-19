@@ -1,11 +1,8 @@
 ﻿using MediatR;
 using Store.Application.Abstractions;
 using Store.Application.DTOs;
-using Store.Application.Mappers.ProductMapper;
-using Store.Application.MediatRHandlers.Requests.GetProduct;
 using Store.Application.MediatRHandlers.Requests.ProductRequest;
 using Store.Domain.Commons;
-using Store.Domain.Entities;
 using System.Collections.ObjectModel;
 
 namespace Store.Application.MediatRHandlers.RequestHandlers.ProductHandlers
@@ -34,11 +31,9 @@ namespace Store.Application.MediatRHandlers.RequestHandlers.ProductHandlers
                     return Result<ReadOnlyCollection<ResponseProductDto>>.Fail("Category not found.");
             }
 
-            var spec = new GetProductsSpecification(request.UserId, request.CategoryId, request.FromDate, request.ToDate);
-
-            ReadOnlyCollection<Product> products = await _productRepository.GetFilteredAsync(spec, ct);
+            ReadOnlyCollection<ResponseProductDto> products = await _productRepository.GetFilteredAsync(request, ct);
             
-            return Result<ReadOnlyCollection<ResponseProductDto>>.Ok(ProductToDto.ToDtoList(products));
+            return Result<ReadOnlyCollection<ResponseProductDto>>.Ok(products);
         }
     }
 }

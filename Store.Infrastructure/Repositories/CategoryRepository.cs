@@ -1,19 +1,28 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MongoDB.Driver;
 using Store.Application.Abstractions;
-using Store.Application.Commons.Specifications;
+using Store.Application.DTOs;
+using Store.Application.MediatRHandlers.Requests.CategoryRequests;
 using Store.Domain.Entities;
-using Store.Infrastructure.Persistence;
+using Store.Infrastructure.Builders;
+using Store.Infrastructure.Persistence.Mongo;
+using Store.Infrastructure.Persistence.Mongo.FilterBuilders;
+using Store.Infrastructure.Persistence.Mongo.ReadModels;
+using Store.Infrastructure.Persistence.SQLServer;
 using System.Collections.ObjectModel;
-using System.Linq;
 
 namespace Store.Infrastructure.Repositories
 {
     public class CategoryRepository : ICategoryRepository
     {
         private readonly AppDbContext _dbContext;
-        public CategoryRepository(AppDbContext dbContext)
+        private readonly IMongoCollection<CategoryReadModel> _collection;
+
+        public CategoryRepository(AppDbContext dbContext, MongoDbContext context)
         {
             _dbContext = dbContext;
+            _collection = context.GetCollection<CategoryReadModel>("categories");
+
         }
 
         public async Task<int> CreateAsync(Category entity, CancellationToken ct)
@@ -33,24 +42,32 @@ namespace Store.Infrastructure.Repositories
             return await _dbContext.Categories.AnyAsync(c => c.Id == id, ct);
         }
 
-        public Task<ReadOnlyCollection<Category>> GetAllAsync(CancellationToken ct)
+        public Task<ReadOnlyCollection<ResponseCategoryDto>> GetAllAsync(CancellationToken ct)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Category> GetByIdAsync(int id, CancellationToken ct)
+        public Task<ResponseCategoryDto> GetByIdAsync(int id, CancellationToken ct)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<ReadOnlyCollection<Category>> GetFilteredAsync(ISpecification<Category> spec, CancellationToken ct)
+        public async Task<ReadOnlyCollection<ResponseCategoryDto>> GetFilteredAsync(GetCategoriesRequest request, CancellationToken ct)
         {
-            IQueryable<Category> query = _dbContext.Categories
-                .Where(spec.Condition);
+            var filter = CategoryFilterBuilder.Build(request);
 
-            var list = await query.ToListAsync(ct);
+            var list = await _collection
+                .Find(filter)
+                .ToListAsync(ct);
 
-            return list.AsReadOnly();
+            return list
+                .Select(doc => new ResponseCategoryDto(
+                        doc.Id,
+                        doc.CategoryName,
+                        doc.CreatedAt,
+                        doc.UpdatedAt))
+                .ToList()
+                .AsReadOnly();
         }
 
         public Task<int> UpdateAsync(Category entity, CancellationToken ct)

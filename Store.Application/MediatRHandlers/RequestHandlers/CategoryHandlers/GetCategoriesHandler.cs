@@ -1,11 +1,8 @@
 ﻿using MediatR;
 using Store.Application.Abstractions;
 using Store.Application.DTOs;
-using Store.Application.Mappers.CategoryMapper;
 using Store.Application.MediatRHandlers.Requests.CategoryRequests;
-using Store.Application.MediatRHandlers.Specifications;
 using Store.Domain.Commons;
-using Store.Domain.Entities;
 using System.Collections.ObjectModel;
 
 namespace Store.Application.MediatRHandlers.RequestHandlers.CategoryHandlers
@@ -20,11 +17,12 @@ namespace Store.Application.MediatRHandlers.RequestHandlers.CategoryHandlers
 
         public async Task<Result<ReadOnlyCollection<ResponseCategoryDto>>> Handle(GetCategoriesRequest request, CancellationToken ct)
         {
-            var spec = new GetCategoriesSpecification(request.CategoryName, request.FromDate, request.ToDate);
+            if (request.FromDate > request.ToDate)
+                return Result<ReadOnlyCollection<ResponseCategoryDto>>.Fail("FromDate cannot be greater than ToDate.");
 
-            ReadOnlyCollection<Category> categories = await _categoryRepository.GetFilteredAsync(spec, ct);
+            ReadOnlyCollection<ResponseCategoryDto> categories = await _categoryRepository.GetFilteredAsync(request, ct);
 
-            return Result<ReadOnlyCollection<ResponseCategoryDto>>.Ok(CategoryToDto.ToDtoList(categories));
+            return Result<ReadOnlyCollection<ResponseCategoryDto>>.Ok(categories);
         }
     }
 }

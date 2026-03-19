@@ -16,7 +16,6 @@ namespace Store.Domain.Entities
         public string? Door { get; private set; }
         public DateTime CreatedAt { get; private set; }
         public DateTime UpdatedAt { get; private set; }
-        private Address() { }
         public Address(int? userId, int? locationId, string? country, string? region, string? city, string? name, int? number, int? floor, string? door)
         {
             UserId = userId;
@@ -28,6 +27,8 @@ namespace Store.Domain.Entities
             Number = number;
             Floor = floor;
             Door = door;
+            CreatedAt = DateTime.UtcNow;
+            UpdatedAt = DateTime.UtcNow;
         }
 
         public static Result<Address> Create(int? userId, int? locationId, string? country, string? region, string? city, string? name, int? number, int? floor, string? door)

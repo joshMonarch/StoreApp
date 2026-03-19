@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Store.Domain.Entities;
 
-namespace Store.Infrastructure.Persistence.Config
+namespace Store.Infrastructure.Persistence.SQLServer.Config
 {
     public class UserConfig : IEntityTypeConfiguration<User>
     {
@@ -13,8 +13,7 @@ namespace Store.Infrastructure.Persistence.Config
             builder.HasKey(u => u.Id);
 
             builder.Property(u => u.Id)
-                .IsRequired()
-                .ValueGeneratedOnAdd();
+                .IsRequired();
 
             builder.Property(u => u.Username)
                 .IsRequired()
@@ -32,14 +31,10 @@ namespace Store.Infrastructure.Persistence.Config
                 .HasMaxLength(500);
 
             builder.Property(u => u.CreatedAt)
-                .IsRequired()
-                .HasDefaultValueSql("GETUTCDATE()")
-                .ValueGeneratedOnAdd();
+                .IsRequired();
 
             builder.Property(u => u.UpdatedAt)
-                .IsRequired()
-                .HasDefaultValueSql("GETUTCDATE()")
-                .ValueGeneratedOnAddOrUpdate();
+                .IsRequired();
 
             builder.HasMany(u => u.Addresses)
                 .WithOne()

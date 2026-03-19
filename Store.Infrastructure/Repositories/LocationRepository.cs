@@ -1,8 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MongoDB.Driver;
 using Store.Application.Abstractions;
-using Store.Application.Commons.Specifications;
+using Store.Application.DTOs;
+using Store.Application.MediatRHandlers.Requests.LocationRequests;
 using Store.Domain.Entities;
-using Store.Infrastructure.Persistence;
+using Store.Infrastructure.Persistence.Mongo;
+using Store.Infrastructure.Persistence.Mongo.FilterBuilders;
+using Store.Infrastructure.Persistence.Mongo.ReadModels;
+using Store.Infrastructure.Persistence.SQLServer;
 using System.Collections.ObjectModel;
 using System.Linq;
 
@@ -11,9 +16,11 @@ namespace Store.Infrastructure.Repositories
     public class LocationRepository : ILocationRepository
     {
         private readonly AppDbContext _dbContext;
-        public LocationRepository(AppDbContext dbContext)
+        private readonly IMongoCollection<LocationReadModel> _collection;
+        public LocationRepository(AppDbContext dbContext, MongoDbContext context)
         {
             _dbContext = dbContext;
+            _collection = context.GetCollection<LocationReadModel>("locations");
         }
 
         public Task<int> CreateAsync(Location entity, CancellationToken ct)
@@ -26,24 +33,32 @@ namespace Store.Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<ReadOnlyCollection<Location>> GetAllAsync(CancellationToken ct)
+        public Task<ReadOnlyCollection<ResponseLocationDto>> GetAllAsync(CancellationToken ct)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Location> GetByIdAsync(int id, CancellationToken ct)
+        public Task<ResponseLocationDto> GetByIdAsync(int id, CancellationToken ct)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<ReadOnlyCollection<Location>> GetFilteredAsync(ISpecification<Location> spec, CancellationToken ct)
+        public async Task<ReadOnlyCollection<ResponseLocationDto>> GetFilteredAsync(GetLocationsRequest request, CancellationToken ct)
         {
-            IQueryable<Location> query = _dbContext.Locations
-                .Where(spec.Condition);
+            var filter = LocationFilterBuilder.Build(request);
 
-            var list = await query.ToListAsync(ct);
+            var list = await _collection
+                .Find(filter)
+                .ToListAsync(ct);
 
-            return list.AsReadOnly();
+            return list
+                .Select(doc => new ResponseLocationDto(
+                        doc.Id,
+                        doc.LocationType,
+                        doc.CreatedAt,
+                        doc.UpdatedAt))
+                .ToList()
+                .AsReadOnly();
         }
 
         public Task<int> UpdateAsync(Location entity, CancellationToken ct)
