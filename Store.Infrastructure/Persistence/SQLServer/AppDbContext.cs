@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Store.Domain.Entities;
-using Store.Infrastructure.Persistence.Config;
+using Store.Infrastructure.Persistence.SQLServer.Config;
 
-namespace Store.Infrastructure.Persistence
+namespace Store.Infrastructure.Persistence.SQLServer
 {
     public class AppDbContext: DbContext
     {

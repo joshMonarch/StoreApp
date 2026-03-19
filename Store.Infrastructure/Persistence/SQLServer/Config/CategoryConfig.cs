@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Store.Domain.Entities;
 
-namespace Store.Infrastructure.Persistence.Config
+namespace Store.Infrastructure.Persistence.SQLServer.Config
 {
     public class CategoryConfig : IEntityTypeConfiguration<Category>
     {
@@ -13,8 +13,7 @@ namespace Store.Infrastructure.Persistence.Config
             builder.HasKey(c => c.Id);
 
             builder.Property(c => c.Id)
-                .IsRequired()
-                .ValueGeneratedOnAdd();
+                .IsRequired();
 
             builder.Property(c => c.CategoryName)
                 .IsRequired()
@@ -24,14 +23,10 @@ namespace Store.Infrastructure.Persistence.Config
                 .IsUnique();
 
             builder.Property(c => c.CreatedAt)
-                .IsRequired()
-                .HasDefaultValueSql("GETUTCDATE()")
-                .ValueGeneratedOnAdd();
+                .IsRequired();
 
             builder.Property(c => c.UpdatedAt)
-                .IsRequired()
-                .HasDefaultValueSql("GETUTCDATE()")
-                .ValueGeneratedOnAddOrUpdate();
+                .IsRequired();
 
             builder.HasMany(c => c.Products)
                 .WithOne()

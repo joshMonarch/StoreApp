@@ -1,8 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MongoDB.Driver;
 using Store.Application.Abstractions;
-using Store.Application.Commons.Specifications;
+using Store.Application.DTOs;
+using Store.Application.MediatRHandlers.Requests.ProductRequest;
 using Store.Domain.Entities;
-using Store.Infrastructure.Persistence;
+using Store.Infrastructure.Persistence.Mongo;
+using Store.Infrastructure.Persistence.Mongo.FilterBuilders;
+using Store.Infrastructure.Persistence.Mongo.ReadModels;
+using Store.Infrastructure.Persistence.SQLServer;
 using System.Collections.ObjectModel;
 
 namespace Store.Infrastructure.Repositories
@@ -10,9 +15,11 @@ namespace Store.Infrastructure.Repositories
     public class ProductRepository : IProductRepository
     {
         private readonly AppDbContext _dbContext;
-        public ProductRepository(AppDbContext dbContext)
+        private readonly IMongoCollection<ProductReadModel> _collection;
+        public ProductRepository(AppDbContext dbContext, MongoDbContext context)
         {
             _dbContext = dbContext;
+            _collection = context.GetCollection<ProductReadModel>("products");
         }
 
         public async Task<int> CreateAsync(Product entity, CancellationToken ct)
@@ -27,24 +34,35 @@ namespace Store.Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<ReadOnlyCollection<Product>> GetAllAsync(CancellationToken ct)
+        public Task<ReadOnlyCollection<ResponseProductDto>> GetAllAsync(CancellationToken ct)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Product> GetByIdAsync(int id, CancellationToken ct)
+        public Task<ResponseProductDto> GetByIdAsync(int id, CancellationToken ct)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<ReadOnlyCollection<Product>> GetFilteredAsync(ISpecification<Product> spec, CancellationToken ct)
+        public async Task<ReadOnlyCollection<ResponseProductDto>> GetFilteredAsync(GetProductsRequest request, CancellationToken ct)
         {
-            IQueryable<Product> query = _dbContext.Products
-                .Where(spec.Condition);
+            var filter = ProductFilterBuilder.Build(request);
 
-            var list = await query.ToListAsync(ct);
+            var list = await _collection
+                .Find(filter)
+                .ToListAsync(ct);
 
-            return list.AsReadOnly();
+            return list
+                .Select(doc => new ResponseProductDto(
+                        doc.Id,
+                        doc.UserId,
+                        doc.CategoryId,
+                        doc.Name,
+                        doc.Stock,
+                        doc.CreatedAt,
+                        doc.UpdatedAt))
+                .ToList()
+                .AsReadOnly();
         }
 
         public Task<int> UpdateAsync(Product entity, CancellationToken ct)

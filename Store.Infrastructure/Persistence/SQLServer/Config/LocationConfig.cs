@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Store.Domain.Entities;
 
-namespace Store.Infrastructure.Persistence.Config
+namespace Store.Infrastructure.Persistence.SQLServer.Config
 {
     public class LocationConfig : IEntityTypeConfiguration<Location>
     {
@@ -13,8 +13,7 @@ namespace Store.Infrastructure.Persistence.Config
             builder.HasIndex(l => l.Id);
 
             builder.Property(l => l.Id)
-                .IsRequired()
-                .ValueGeneratedOnAdd();
+                .IsRequired();
 
             builder.Property(l => l.LocationType)
                 .IsRequired()
@@ -24,14 +23,10 @@ namespace Store.Infrastructure.Persistence.Config
                 .IsUnique();
 
             builder.Property(l => l.CreatedAt)
-                .IsRequired()
-                .HasDefaultValueSql("GETUTCDATE()")
-                .ValueGeneratedOnAdd();
+                .IsRequired();
 
             builder.Property(l => l.UpdatedAt)
-                .IsRequired()
-                .HasDefaultValueSql("GETUTCDATE()")
-                .ValueGeneratedOnAddOrUpdate();
+                .IsRequired();
 
             builder.HasMany(l => l.Addresses)
                 .WithOne()

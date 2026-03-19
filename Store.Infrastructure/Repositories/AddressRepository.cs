@@ -1,8 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MongoDB.Driver;
 using Store.Application.Abstractions;
-using Store.Application.Commons.Specifications;
+using Store.Application.DTOs;
+using Store.Application.MediatRHandlers.Requests.AddressRequests;
 using Store.Domain.Entities;
-using Store.Infrastructure.Persistence;
+using Store.Infrastructure.Builders;
+using Store.Infrastructure.Persistence.Mongo;
+using Store.Infrastructure.Persistence.ReadModels;
+using Store.Infrastructure.Persistence.SQLServer;
 using System.Collections.ObjectModel;
 
 namespace Store.Infrastructure.Repositories
@@ -10,9 +15,11 @@ namespace Store.Infrastructure.Repositories
     public class AddressRepository : IAddressRepository
     {
         private readonly AppDbContext _dbContext;
-        public AddressRepository(AppDbContext dbContext)
+        private readonly IMongoCollection<AddressReadModel> _collection;
+        public AddressRepository(AppDbContext dbContext, MongoDbContext context)
         {
             _dbContext = dbContext;
+            _collection = context.GetCollection<AddressReadModel>("addresses");
         }
         public async Task<int> CreateAsync(Address entity, CancellationToken ct)
         {
@@ -26,24 +33,40 @@ namespace Store.Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<ReadOnlyCollection<Address>> GetAllAsync(CancellationToken ct)
+        public Task<ReadOnlyCollection<ResponseAddressDto>> GetAllAsync(CancellationToken ct)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Address> GetByIdAsync(int id, CancellationToken ct)
+        public Task<ResponseAddressDto> GetByIdAsync(int id, CancellationToken ct)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<ReadOnlyCollection<Address>> GetFilteredAsync(ISpecification<Address> spec, CancellationToken ct)
+        public async Task<ReadOnlyCollection<ResponseAddressDto>> GetFilteredAsync(GetAddressesRequest request, CancellationToken ct)
         {
-            IQueryable<Address> query = _dbContext.Addresses
-                .Where(spec.Condition);
+            var filter = AddressFilterBuilder.Build(request);
 
-            var list = await query.ToListAsync(ct);
+            var list = await _collection
+                .Find(filter)
+                .ToListAsync(ct);
 
-            return list.AsReadOnly();
+            return list
+                .Select(doc => new ResponseAddressDto(
+                        doc.Id,
+                        doc.UserId,
+                        doc.LocationId,
+                        doc.Country,
+                        doc.Region,
+                        doc.City,
+                        doc.Name,
+                        doc.Number,
+                        doc.Floor,
+                        doc.Door,
+                        doc.CreatedAt,
+                        doc.UpdatedAt))
+                .ToList()
+                .AsReadOnly();
         }
 
         public Task<int> UpdateAsync(Address entity, CancellationToken ct)
